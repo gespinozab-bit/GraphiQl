@@ -1,0 +1,87 @@
+query ListIncidents(
+  $filter: IncidentFilterInput
+  $pagination: PaginationInput
+) {
+  incidents(filter: $filter, pagination: $pagination) {
+    items {
+      id
+      title
+      status
+      priority
+      assignee {
+        id
+        name
+      }
+    }
+    pageInfo {
+      page
+      pageSize
+      totalItems
+      totalPages
+      hasNextPage
+    }
+  }
+}
+
+query GetIncident($id: ID!) {
+  incident(id: $id) {
+    id
+    title
+    description
+    status
+    priority
+    createdAt
+    assignee {
+      id
+      name
+      specialty
+      active
+    }
+  }
+}
+
+mutation CreateIncident($input: CreateIncidentInput!) {
+  createIncident(input: $input) {
+    id
+    title
+    description
+    status
+    priority
+    assignee {
+      name
+    }
+  }
+}
+
+mutation UpdateIncident($id: ID!, $input: UpdateIncidentInput!) {
+  updateIncident(id: $id, input: $input) {
+    id
+    title
+    status
+    priority
+  }
+}
+
+mutation CreateInvalidIncident($input: CreateIncidentInput!) {
+  createIncident(input: $input) {
+    id
+    title
+    status
+  }
+}
+
+query TestPageLimit($pagination: PaginationInput) {
+  incidents(pagination: $pagination) {
+    items {
+      id
+      title
+    }
+    pageInfo {
+      page
+      pageSize
+      totalItems
+      totalPages
+      hasNextPage
+    }
+  }
+}

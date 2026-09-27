@@ -1,0 +1,93 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateIncidentInput {
+  assigneeId: ID!
+  description: String
+  priority: IncidentPriority!
+  title: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Incident {
+  assignee: Technician!
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  priority: IncidentPriority!
+  status: IncidentStatus!
+  title: String!
+}
+
+input IncidentFilterInput {
+  assigneeId: ID
+  priority: IncidentPriority
+  search: String
+  status: IncidentStatus
+}
+
+type IncidentPage {
+  items: [Incident!]!
+  pageInfo: PageInfo!
+}
+
+enum IncidentPriority {
+  HIGH
+  LOW
+  MEDIUM
+}
+
+enum IncidentStatus {
+  IN_PROGRESS
+  OPEN
+  RESOLVED
+}
+
+type Mutation {
+  """Crea una incidencia abierta y la asigna a un técnico existente."""
+  createIncident(input: CreateIncidentInput!): Incident!
+
+  """Actualiza los campos enviados de una incidencia existente."""
+  updateIncident(id: ID!, input: UpdateIncidentInput!): Incident!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  page: Int!
+  pageSize: Int!
+  totalItems: Int!
+  totalPages: Int!
+}
+
+input PaginationInput {
+  page: Int! = 1
+  pageSize: Int! = 10
+}
+
+type Query {
+  """Obtiene una incidencia por su identificador."""
+  incident(id: ID!): Incident!
+
+  """Lista incidencias aplicando filtros y paginación."""
+  incidents(filter: IncidentFilterInput, pagination: PaginationInput): IncidentPage!
+}
+
+type Technician {
+  active: Boolean!
+  id: ID!
+  name: String!
+  specialty: String
+}
+
+input UpdateIncidentInput {
+  assigneeId: ID
+  description: String
+  priority: IncidentPriority
+  status: IncidentStatus
+  title: String
+}
